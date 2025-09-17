@@ -1,65 +1,71 @@
-# 🚀 Projeto de Arquitetura de Nuvem: Análise de Crédito
-
+# Projeto de Arquitetura de Nuvem: Análise de Crédito  
 ![Bootcamp Code Girls - DIO](https://img.shields.io/badge/Bootcamp-Code%20Girls%20DIO-blueviolet)
 
----
+## Introdução
 
-### 📋 Introdução
+Este documento especifica uma arquitetura de nuvem destinada à automação da análise de crédito. O processo tradicionalmente exige intervenção manual para coleta e validação de documentos, o que provoca lentidão e risco de erros. A solução proposta utiliza recursos da AWS para assegurar escalabilidade, segurança e automação, aprimorando a experiência do cliente e a eficiência institucional.
 
-Este repositório documenta a concepção de uma arquitetura de nuvem para resolver um problema de negócio crucial: a automação da **análise de crédito**. Tradicionalmente, este processo é lento, manual e propenso a falhas, envolvendo a coleta e validação de documentos de forma ineficiente, o que impacta diretamente a experiência do cliente e a agilidade da instituição financeira.
+Este trabalho integra o escopo do Bootcamp Code Girls, promovido pela DIO. Objetiva demonstrar como projetar uma solução robusta que processe, analise e valide documentos de forma automatizada, com documentação técnica rigorosa e detalhada.
 
-Para solucionar esse desafio, o projeto propõe e detalha uma arquitetura de nuvem usando a **AWS**. O objetivo é transformar um fluxo manual em um sistema automatizado, escalável e seguro. Este projeto, desenvolvido como parte do bootcamp **Code Girls** da **Digital Innovation One (DIO)**, demonstra a aplicação de conhecimentos em design de soluções para construir um sistema robusto e eficiente que processa, analisa e valida documentos de forma autônoma. O material serve como uma especificação técnica detalhada, apresentando o fluxo de trabalho e as configurações hipotéticas necessárias para a implementação da solução.
+## Objetivos
 
----
+Os objetivos consistem em:
 
-### 🎯 Objetivos
+- Projetar arquitetura de nuvem adequada a problema complexo de negócio;  
+- Documentar processos e fluxos de trabalho com clareza e precisão;  
+- Demonstrar uso eficaz de serviços AWS em solução modular, segura e escalável.
 
-O escopo deste projeto foi definido para atingir os seguintes objetivos de aprendizado:
+## Conhecimentos técnicos aplicados
 
-* **Projetar uma arquitetura de nuvem** para resolver um problema de negócio complexo.
-* **Documentar processos e fluxos** de forma clara e estruturada.
-* **Demonstrar competência** no uso de serviços AWS para a construção de soluções robustas.
+Este projeto evidencia domínio dos seguintes conceitos:
 
----
+- Design de soluções em nuvem;  
+- Arquitetura serverless e orientada a eventos;  
+- Orquestração de workflows com AWS Step Functions;  
+- Segurança: redes virtuais (VPC), sub‑redes públicas e privadas, grupos de segurança;  
+- Integração entre serviços AWS: S3, Lambda, EC2, Step Functions.
 
-### 🧠 Conhecimentos Técnicos
+## Metodologia
 
-A elaboração desta arquitetura de solução demonstra proficiência em conceitos-chave de computação em nuvem, incluindo:
+Elaborou‑se um desenho arquitetônico que responda aos requisitos de negócio com eficiência e resiliência. Princípios de arquitetura da AWS foram aplicados para assegurar modularidade, baixo acoplamento e autonomia entre componentes.
 
-* **Design de Soluções na Nuvem**: Habilidade de traduzir requisitos de negócio em uma arquitetura técnica funcional e otimizada.
-* **Arquitetura Serverless e Orientada a Eventos**: Entendimento de como usar serviços como **Amazon S3** e **AWS Lambda** para criar fluxos de trabalho que reagem a eventos em tempo real.
-* **Orquestração de Workflows**: Conhecimento do uso do **AWS Step Functions** para gerenciar, monitorar e garantir a execução de processos distribuídos e de várias etapas.
-* **Segurança e Redes**: Compreensão de boas práticas de segurança, como a segmentação de rede usando **VPCs**, **Subnets privadas** e **Security Groups** para proteger recursos.
-* **Integração de Serviços**: Capacidade de interconectar diferentes serviços da AWS (S3, Lambda, Step Functions, EC2) de forma coesa e eficiente.
+### Diagrama da arquitetura
 
----
-
-### ⚙️ Metodologia
-
-A metodologia adotada para este projeto consistiu na elaboração de um design de arquitetura que soluciona o problema de negócio de forma eficiente e resiliente. A solução foi projetada utilizando os princípios de arquitetura de nuvem da AWS, combinando serviços gerenciados e um fluxo de trabalho orquestrado.
-
-#### Diagrama de Arquitetura
-
-O diagrama a seguir ilustra a arquitetura proposta para a automação da análise de crédito, servindo como blueprint para a implementação do sistema.
+A imagem a seguir representa a solução proposta para automação da análise de crédito:
 
 ![Diagrama da Arquitetura de Análise de Crédito](./arquiterura-drawio.png)
 
-#### Fluxo do Processo de Análise de Crédito
+### Fluxo de trabalho
 
-O fluxo de trabalho foi concebido para automatizar a análise de documentos de clientes, utilizando uma abordagem **orientada a eventos**. O processo é iniciado com o upload de um documento em um bucket do **Amazon S3**, que dispara uma função **AWS Lambda**. Esta função, por sua vez, inicia um workflow orquestrado pelo **AWS Step Functions**. Dentro deste workflow, diferentes tarefas são executadas, como o uso de uma instância **Amazon EC2** para processamento intensivo de dados. O resultado final é armazenado de forma segura e notificado aos sistemas internos.
+1. Cliente realiza upload de documento em bucket no Amazon S3;  
+2. Evento no bucket aciona função Lambda;  
+3. Lambda inicia workflow no Step Functions;  
+4. Workflow invoca tarefas distintas:  
+   - funções Lambda para integrações leves;  
+   - instância EC2 para processamento intensivo;  
+5. Resultado do workflow armazena‑se com segurança;  
+6. Notificação encaminha resultado aos sistemas internos relevantes.
 
-#### Detalhamento Técnico e Configurações Hipotéticas
+## Detalhamento técnico
 
-Para a implementação da arquitetura, as seguintes configurações seriam consideradas:
+| Componente | Função | Observações de implantação |
+|------------|--------|-----------------------------|
+| **Amazon S3** | Armazenamento de documentos de entrada e resultados finais | Dois buckets distintos: entrada (inbound) e resultados (results). Configurar notificação de evento no bucket de entrada para acionar Lambda. |
+| **AWS Lambda** | Processamento leve, disparo de workflow | Função principal para disparo do Step Functions; funções auxiliares para chamadas de API e validações simples. |
+| **AWS Step Functions** | Orquestração das etapas do processo | Máquina de estados com definição clara de tarefas, tratamento de falhas e branches de fluxo. |
+| **Amazon EC2** | Processamentos pesados (scoring, análise de dados) | Executar em sub‑rede privada; alocar recursos conforme carga; garantir segurança de acesso. |
+| **VPC, Subnets e Security Groups** | Proteção da infraestrutura | Sub‑redes públicas para recursos que demandem acesso externo; privadas para instâncias sensíveis; grupos de segurança restritivos; isolamento mínimo necessário. |
 
-* **Amazon S3**: Dois buckets seriam criados para segregar os dados de entrada (`analise-credito-inbound`) e os resultados finais (`analise-credito-results`). Uma **notificação de evento** seria configurada no bucket de entrada para acionar a função Lambda.
-* **AWS Lambda**: Uma função seria provisionada para atuar como **trigger**, recebendo a notificação do S3 e iniciando o workflow do Step Functions. Outras funções seriam utilizadas para tarefas mais leves, como a integração com APIs.
-* **AWS Step Functions**: Uma **máquina de estados** seria projetada para orquestrar as etapas do processo, incluindo a invocação de funções Lambda e a execução de tarefas em instâncias EC2.
-* **Amazon EC2**: Uma instância de computação seria utilizada para executar modelos de scoring de crédito ou outras cargas de trabalho pesadas, operando em uma **`Private Subnet`** para garantir a segurança.
-* **VPC, Subnets e Security Groups**: A infraestrutura de rede seria segmentada em `Public` e `Private Subnets`. **Security Groups** seriam configurados para permitir a comunicação segura apenas entre os serviços necessários, garantindo que a instância EC2 não esteja exposta diretamente à internet.
+## Segurança e redes
 
----
+A arquitetura deve obedecer aos seguintes critérios de segurança:
 
-### ✅ Conclusão
+- Separação entre rede pública e privada;  
+- Controle de tráfego por grupos de segurança;  
+- Visibilidade mínima de recursos críticos para a internet;  
+- Criptografia de dados em trânsito e em repouso;  
+- Políticas de IAM (Identity and Access Management) com princípio de menor privilégio.
 
-A concepção desta arquitetura demonstra a capacidade de traduzir um problema de negócio em uma solução técnica viável e robusta na nuvem. O uso de **serviços gerenciados** e a **separação de responsabilidades** entre os componentes garantem que a solução seja **escalável, segura e de baixo custo de manutenção**. Este projeto solidifica o conhecimento em design de sistemas distribuídos e a aplicação de boas práticas de arquitetura de nuvem.
+## Conclusão
+
+A solução proposta traduz problema de negócio em arquitetura técnica viável, segura e escalável. O uso de serviços gerenciados favorece manutenção reduzida. A separação clara de componentes possibilita evolução futura sem comprometimento do sistema.  
