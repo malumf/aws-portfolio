@@ -42,7 +42,7 @@ A metodologia adotada para este projeto consistiu na elaboração de um design d
 
 O diagrama a seguir ilustra a arquitetura proposta para a automação da análise de crédito, servindo como blueprint para a implementação do sistema.
 
-![Diagrama da Arquitetura de Análise de Crédito](images/diagrama-de-arquitetura.png)
+![Diagrama da Arquitetura de Análise de Crédito](./arquiterura-drawio.png)
 
 #### Fluxo do Processo de Análise de Crédito
 
